@@ -20,6 +20,7 @@ int main()
         }
 
         window.clear();
+        ship.update();
         ship.drawShape(window);
         window.display();
     }
