@@ -4,11 +4,11 @@
 
 Ship::Ship(){
     shape.setPointCount(3);
-    shape.setPoint(0, sf::Vector2f(0,10));
-    shape.setPoint(1, sf::Vector2f(-5,0));
-    shape.setPoint(2, sf::Vector2f(5,0));
-
-    shape.setPosition(sf::Vector2f(WIDTH/2,HEIGHT/2));
+    shape.setPoint(0, sf::Vector2f(10.0f, 0.0f));
+    shape.setPoint(1, sf::Vector2f(-10.0f, 7.5f));
+    shape.setPoint(2, sf::Vector2f(-10.0f, -7.5f));
+ 
+    shape.setPosition(sf::Vector2f(WIDTH/2, HEIGHT/2));
 }
 
 void Ship::drawShape(sf::RenderWindow &window){
@@ -16,22 +16,34 @@ void Ship::drawShape(sf::RenderWindow &window){
 }
 
 void Ship::update(){
+    sf::Vector2f vel;
+    sf::Vector2f theta;
    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
        if (a < maxAcceleration){
            a += accelerationRate;
        }
-   } else{
-       if(a > 0){
-           a -= accelerationRate;
+       applyForces();
+       theta = sf::Vector2f(v.x * cos(angle), v.y * sin(angle));
+   }
+   else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
+       if(a > -maxAcceleration){
+        a -= accelerationRate;
+        applyForces();
        }
    }
-   applyForces();
-   shape.move(v);
+   else if( sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
+        angle += (5 * DEG2RAD);
+        shape.rotate(5.f);
+        std::cout << angle << std::endl;
+   }
+    vel += theta;
+
+    shape.move(vel);
 }
 
 void Ship::applyForces(){
        // Calculate force using F = ma
-    sf::Vector2f f(0, m * a);
+    sf::Vector2f f(m * a, m * a);
 
     // acceleration: change in velocity due to force f on object with mass m
     sf::Vector2f dv = f / m;

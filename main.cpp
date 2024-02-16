@@ -5,7 +5,7 @@
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(800, 800), "snake", sf::Style::Close);
-    float framerateLimit = 60.f;
+    float framerateLimit = 30.f;
     window.setFramerateLimit(framerateLimit);
 
     Ship ship;
