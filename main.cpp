@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window/WindowStyle.hpp>
-#include "ship.h"
+#include "projectile.h"
 
 int main()
 {
@@ -9,6 +9,7 @@ int main()
     window.setFramerateLimit(framerateLimit);
 
     Ship ship;
+    Projectile projectile;
 
     while (window.isOpen())
     {
@@ -21,6 +22,7 @@ int main()
 
         window.clear();
         ship.update();
+        projectile.update(window, ship);
         ship.drawShape(window);
         window.display();
     }

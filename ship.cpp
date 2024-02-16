@@ -84,3 +84,7 @@ sf::Vector2f Ship::getVelocity(){
 float Ship::getAngle(){
     return angle;
 }
+
+sf::Vector2f Ship::getPosition(){
+    return shape.getPosition();
+}

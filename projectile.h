@@ -2,6 +2,7 @@
 #define PROJECTILE_H
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 #include "ship.h"
 
 class Projectile{
@@ -9,10 +10,14 @@ class Projectile{
         Projectile();
         void drawProjectile(sf::RenderWindow &window);
         void shoot(Ship &ship);
+        void update(sf::RenderWindow &window, Ship &ship);
+        typedef struct{
+            float angle;
+            sf::Vector2f velocity;
+            sf::RectangleShape shape; 
+        } bullet;
     private:
-        float angle;
-        sf::Vector2f v;
-        sf::RectangleShape bullet;
+        std::vector<bullet> bulletVector;
 };
 
 #endif 
