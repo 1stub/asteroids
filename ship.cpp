@@ -19,7 +19,10 @@ void Ship::update(){
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
         angle += (5 * DEG2RAD);
         shape.rotate(5.f);
-        std::cout << angle << std::endl;
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
+        angle -= (5 * DEG2RAD);
+        shape.rotate(-5.f);
     }
     // Update velocity based on the ship's orientation if acceleration keys are pressed
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
