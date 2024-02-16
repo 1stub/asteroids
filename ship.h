@@ -20,4 +20,5 @@ class Ship{
         float accelerationRate = 0.0025;
         float maxAcceleration = 0.5;
         sf::Vector2f v;
+        sf::Vector2f moveVel;
 };
