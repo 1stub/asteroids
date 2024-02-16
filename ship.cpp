@@ -16,39 +16,29 @@ void Ship::drawShape(sf::RenderWindow &window){
 }
 
 void Ship::update(){
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+        angle += (5 * DEG2RAD);
+        shape.rotate(5.f);
+        std::cout << angle << std::endl;
+    }
     // Update velocity based on the ship's orientation if acceleration keys are pressed
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
         if (a < maxAcceleration) {
             a += accelerationRate;
         }
         applyForces();
-
-        // Calculate the velocity components based on the ship's orientation
-        moveVel = sf::Vector2f(v.x * cos(angle), v.y * sin(angle));
-    } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-        if (a > -maxAcceleration) {
-            a -= accelerationRate;
-            applyForces();
+        moveVel = v;
+    }else{
+        if(a>0){
+            a-=accelerationRate;
         }
-
-        // Calculate the velocity components based on the ship's orientation
-        moveVel = sf::Vector2f(v.x * cos(angle), v.y * sin(angle));
     }
-
-    // Rotate the ship when the rotation key is pressed
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-        angle += (5 * DEG2RAD);
-        shape.rotate(5.f);
-        std::cout << angle << std::endl;
-    }
-
-    // Apply the calculated velocity to the ship's position
     shape.move(moveVel);
 }
 
 void Ship::applyForces(){
        // Calculate force using F = ma
-    sf::Vector2f f(m * a, m * a);
+    sf::Vector2f f(m * a * cos(angle), m * a * sin(angle));
 
     // acceleration: change in velocity due to force f on object with mass m
     sf::Vector2f dv = f / m;
