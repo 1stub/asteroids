@@ -9,6 +9,8 @@ class Ship{
         void setPosition(const sf::Vector2f& position);
        void update();
        void applyForces();
+       sf::Vector2f getVelocity();
+       float getAngle();
     private:
         sf::ConvexShape shape;
         float angle = 0; //do cos and sin then multiply by velocity vector to account for rotations

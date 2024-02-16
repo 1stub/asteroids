@@ -76,3 +76,11 @@ void Ship::applyForces(){
     }
     std::cout << v.x << ", " << v.y << std::endl;
 }
+
+sf::Vector2f Ship::getVelocity(){
+    return v;
+}
+
+float Ship::getAngle(){
+    return angle;
+}
