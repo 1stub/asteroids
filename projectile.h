@@ -15,7 +15,7 @@ class Projectile{
         typedef struct{
             float angle;
             sf::Vector2f velocity;
-            sf::RectangleShape shape; 
+            sf::ConvexShape shape; 
         } bullet;
     private:
         std::vector<bullet> bulletVector;
