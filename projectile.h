@@ -11,6 +11,7 @@ class Projectile{
         void drawProjectile(sf::RenderWindow &window);
         void shoot(Ship &ship);
         void update(sf::RenderWindow &window, Ship &ship);
+        void checkBounds();
         typedef struct{
             float angle;
             sf::Vector2f velocity;
@@ -18,6 +19,7 @@ class Projectile{
         } bullet;
     private:
         std::vector<bullet> bulletVector;
+        bool hasShot;
 };
 
 #endif 
