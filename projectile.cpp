@@ -18,17 +18,17 @@ void Projectile::shoot(Ship &ship){
         newBullet.velocity = sf::Vector2f(cos(newBullet.angle) * 3, sin(newBullet.angle) * 3);        
         newBullet.shape.setPointCount(4); // Use more points to create a rectangle-like shape
         
-        float thickness = 2.0f; // Set the thickness of the line
-        sf::Vector2f offset(cos(newBullet.angle + M_PI / 2) * thickness, sin(newBullet.angle + M_PI / 2) * thickness); // Calculate the offset
+        float thickness = 1.0f; // Set the thickness of the line
+        sf::Vector2f offset((cos(newBullet.angle) * thickness), (sin(newBullet.angle) * thickness)); // Calculate the offset
         
-        newBullet.shape.setPoint(0, sf::Vector2f(0,0) + offset);
-        newBullet.shape.setPoint(1, sf::Vector2f(10*cos(newBullet.angle), 10*sin(newBullet.angle)) + offset); // Adjust the length of the line
-        newBullet.shape.setPoint(2, sf::Vector2f(thickness, sin(newBullet.angle)) + offset); // Adjust the thickness
-        newBullet.shape.setPoint(3, sf::Vector2f(cos(newBullet.angle), thickness) + offset); // Adjust the thickness
+        newBullet.shape.setPoint(0, sf::Vector2f(0, 0) + offset);
+        newBullet.shape.setPoint(1, sf::Vector2f(15, 0) + offset); // Adjust the length of the line
+        newBullet.shape.setPoint(2, sf::Vector2f(10, thickness) + offset); // Adjust the thickness
+        newBullet.shape.setPoint(3, sf::Vector2f(0, thickness) + offset); // Adjust the thickness
         newBullet.shape.setFillColor(sf::Color::White);
 
         newBullet.shape.setPosition(ship.getPosition());
-        newBullet.shape.setRotation(newBullet.angle); // Convert angle from radians to degrees
+        newBullet.shape.setRotation(newBullet.angle * 180 / M_PI); // Convert angle from radians to degrees
 
         bulletVector.push_back(newBullet);
     }
