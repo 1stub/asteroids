@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window/WindowStyle.hpp>
 #include "projectile.h"
+#include "asteroid.h"
 
 int main()
 {
@@ -10,6 +11,7 @@ int main()
 
     Ship ship;
     Projectile projectile;
+    Asteroid asteroid;
 
     while (window.isOpen())
     {
@@ -24,6 +26,7 @@ int main()
         ship.update();
         projectile.update(window, ship);
         ship.drawShape(window);
+        asteroid.updateAsteroid(window);
         window.display();
     }
 

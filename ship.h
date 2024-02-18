@@ -1,17 +1,20 @@
+#ifndef SHIP_H
+#define SHIP_H
+
 #include <SFML/Graphics.hpp>
 #include <cmath>
 #include <iostream>
 
 class Ship{
     public:
-       Ship();
-       void drawShape(sf::RenderWindow &window);
+        Ship();
+        void drawShape(sf::RenderWindow &window);
         void setPosition(const sf::Vector2f& position);
-       void update();
-       void applyForces();
-       sf::Vector2f getVelocity();
-       float getAngle();
-       sf::Vector2f getPosition();
+        void update();
+        void applyForces();
+        sf::Vector2f getVelocity();
+        float getAngle();
+        sf::Vector2f getPosition();
     private:
         sf::ConvexShape shape;
         float angle = 0; //do cos and sin then multiply by velocity vector to account for rotations
@@ -25,3 +28,5 @@ class Ship{
         sf::Vector2f v;
         sf::Vector2f moveVel;
 };
+
+#endif
