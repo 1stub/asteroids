@@ -17,6 +17,7 @@ class Projectile{
             sf::Vector2f velocity;
             sf::ConvexShape shape; 
         } bullet;
+        std::vector<bullet> getProjectiles();
     private:
         std::vector<bullet> bulletVector;
         bool hasShot;

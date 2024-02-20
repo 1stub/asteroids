@@ -26,7 +26,7 @@ int main()
         ship.update();
         projectile.update(window, ship);
         ship.drawShape(window);
-        asteroid.updateAsteroid(window);
+        asteroid.updateAsteroid(window, ship, projectile);
         window.display();
     }
 

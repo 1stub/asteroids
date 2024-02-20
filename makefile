@@ -5,7 +5,7 @@ LDFLAGS = -L/home/stub/repos/SFML/build/lib
 LIBS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
 # List your source files here
-SOURCES = main.cpp ship.cpp projectile.cpp asteroid.cpp
+SOURCES = main.cpp asteroid.cpp ship.cpp projectile.cpp
 
 # Generate a list of object files from the source files
 OBJECTS = $(SOURCES:.cpp=.o)

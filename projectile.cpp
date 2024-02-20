@@ -58,3 +58,7 @@ void Projectile::update(sf::RenderWindow &window, Ship &ship){
     drawProjectile(window);
 }
 
+std::vector<Projectile::bullet> Projectile::getProjectiles(){
+    return bulletVector;
+}
+
