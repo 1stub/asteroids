@@ -1,27 +1,21 @@
 #include "asteroid.h"
+#include <SFML/Graphics/CircleShape.hpp>
 
-Asteroid::Asteroid(){
-    //Intended to set sizes for each asteroid;
-    largeAsteroid.setPointCount(8);
-    mediumAsteroid.setPointCount(8);
-    smallAsteroid.setPointCount(8);
-
-    largeAsteroid.setRadius(40);
-    largeAsteroid.setFillColor(sf::Color::Black);
-    largeAsteroid.setOutlineColor(sf::Color::White);
-    largeAsteroid.setOutlineThickness(1);
-    largeAsteroid.setPosition(sf::Vector2f(200,200));
+Asteroid::Asteroid(sf::Vector2f position, float size, float angle) : hitCount(0){
+    asteroid.setPointCount(8);
+    asteroid.setRadius(size);
+    asteroid.rotate(angle);
 }
 
 void Asteroid::updateAsteroid(sf::RenderWindow &window, Ship &ship, Projectile &bullet){
     for(auto bullet : bullet.getProjectiles()){
-        if(bullet.shape.getGlobalBounds().intersects(largeAsteroid.getGlobalBounds())){
-            std::cout << "bullet hit large asteroid" << std::endl;
+        if(bullet.shape.getGlobalBounds().intersects(asteroid.getGlobalBounds())){
+            hitCount++;
         }
     } 
-    drawAsteroid(window); 
+    drawAsteroid(window, asteroid); 
 }
 
-void Asteroid::drawAsteroid(sf::RenderWindow &window){
-    window.draw(largeAsteroid);
+void Asteroid::drawAsteroid(sf::RenderWindow &window, sf::CircleShape asteroid){
+    window.draw(asteroid);
 }

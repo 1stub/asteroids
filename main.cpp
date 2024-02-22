@@ -2,6 +2,7 @@
 #include <SFML/Window/WindowStyle.hpp>
 #include "projectile.h"
 #include "asteroid.h"
+#include "collisions.h"
 
 int main()
 {
@@ -11,7 +12,8 @@ int main()
 
     Ship ship;
     Projectile projectile;
-    Asteroid asteroid;
+    Collisions collide;
+    Asteroid asteroid(sf::Vector2f(80,80), 40, 10);
 
     while (window.isOpen())
     {
@@ -26,7 +28,7 @@ int main()
         ship.update();
         projectile.update(window, ship);
         ship.drawShape(window);
-        asteroid.updateAsteroid(window, ship, projectile);
+        collide.update(window, ship, projectile, asteroid );
         window.display();
     }
 
