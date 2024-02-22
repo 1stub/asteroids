@@ -6,20 +6,9 @@ Asteroid::Asteroid(sf::Vector2f position, float size, float angle) : hitCount(0)
     asteroid.setFillColor(sf::Color::Black); 
     asteroid.setOutlineColor(sf::Color::White);
     asteroid.setOutlineThickness(1.f);
+    asteroid.setRadius(size);
+    this->radius = size;
 
-    const float angleIncrement = 3.14159f / 4.0f; // Angle increment for each point (45 degrees)
-
-    float angleRad = 0.0f; // Initial angle
-
-    for (int i = 0; i < 8; ++i) {
-        float x = size * std::cos(angleRad); // X-coordinate of the point
-        float y = size * std::sin(angleRad); // Y-coordinate of the point
-            
-        std::cout << x << " " << y << std::endl;
-        asteroid.setPoint(i, sf::Vector2f(x, y)); // Set the point
-
-        angleRad += angleIncrement; // Increment angle for the next point
-    }
     asteroid.setPosition(position);
 }
 
@@ -40,7 +29,8 @@ void drawBoundingBox(sf::RenderWindow& window, const sf::ConvexShape& shape) {
 
 void Asteroid::updateAsteroid(sf::RenderWindow &window, Ship &ship, Projectile &bullet){
     for (auto it = bullet.getProjectiles().begin(); it != bullet.getProjectiles().end(); ++it) {
-        if(asteroid.getGlobalBounds().contains(it->shape.getPosition() + (0.5f * it->shape.getSize()))){
+        sf::FloatRect rect = it->shape.getGlobalBounds();
+        if(checkPoint(rect)){ //finds a point that is always on the line due to weird boinding box
             std::cout << "Collision detedted" << std::endl;
             hitCount++;
             bullet.getProjectiles().erase(it);
@@ -49,11 +39,27 @@ void Asteroid::updateAsteroid(sf::RenderWindow &window, Ship &ship, Projectile &
             }
         }
     }
-    drawBoundingBox(window,asteroid);
     drawAsteroid(window, asteroid); 
 }
 
-void Asteroid::drawAsteroid(sf::RenderWindow &window, sf::ConvexShape &asteroid){
+void Asteroid::drawAsteroid(sf::RenderWindow &window, sf::CircleShape &asteroid){
     window.draw(asteroid);
+}
+
+// used this https://stackoverflow.com/questions/401847/circle-rectangle-collision-detection-intersection
+bool Asteroid::checkPoint(sf::FloatRect rect) {
+    sf::Vector2f circleDistance;
+    circleDistance.x = abs((int)asteroid.getPosition().x - (int)rect.getPosition().x);
+    circleDistance.y = abs((int)asteroid.getPosition().y - (int)rect.getPosition().y);
+
+    if (circleDistance.x > (rect.width/2 + radius)) { return false; }
+    if (circleDistance.y > (rect.height/2 + radius)) { return false; }
+
+    if (circleDistance.x <= (rect.width/2)) { return true; } 
+    if (circleDistance.y <= (rect.height/2)) { return true; }
+
+    float cornerDistance_sq = ((circleDistance.x - rect.width/2) * (circleDistance.x - rect.width/2)) + ((circleDistance.y - rect.height/2) * (circleDistance.y - rect.height/2));
+
+    return (cornerDistance_sq <= (radius * radius));
 }
 
