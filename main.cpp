@@ -13,7 +13,8 @@ int main()
     Ship ship;
     Projectile projectile;
     Collisions collide;
-    Asteroid asteroid(sf::Vector2f(80,80), 40, 10);
+    
+    collide.createAsteroid(sf::Vector2f(80,80), 40, 20);
 
     while (window.isOpen())
     {
@@ -28,7 +29,7 @@ int main()
         ship.update();
         projectile.update(window, ship);
         ship.drawShape(window);
-        collide.update(window, ship, projectile, asteroid );
+        collide.update(window, ship, projectile);
         window.display();
     }
 
