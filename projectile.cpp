@@ -16,20 +16,18 @@ void Projectile::shoot(Ship &ship){
         bullet newBullet;
         newBullet.angle = ship.getAngle();
         newBullet.velocity = sf::Vector2f(cos(newBullet.angle) * 3, sin(newBullet.angle) * 3);        
-        newBullet.shape.setPointCount(4); // Use more points to create a rectangle-like shape
-        
-        float thickness = 1.0f; // Set the thickness of the line
-        sf::Vector2f offset((cos(newBullet.angle) * thickness), (sin(newBullet.angle) * thickness)); // Calculate the offset
-        
-        newBullet.shape.setPoint(0, sf::Vector2f(0, 0) + offset);
-        newBullet.shape.setPoint(1, sf::Vector2f(15, 0) + offset); // Adjust the length of the line
-        newBullet.shape.setPoint(2, sf::Vector2f(10, thickness) + offset); // Adjust the thickness
-        newBullet.shape.setPoint(3, sf::Vector2f(0, thickness) + offset); // Adjust the thickness
+        // Create a thin rectangle as the projectile shape
+        float thickness = 1.0f;
+        float length = 15.0f;
+        newBullet.shape.setSize(sf::Vector2f(length, thickness)); // Set the size of the rectangle
         newBullet.shape.setFillColor(sf::Color::White);
 
-        newBullet.shape.setPosition(ship.getPosition());
-        newBullet.shape.setRotation(newBullet.angle * 180 / M_PI); // Convert angle from radians to degrees
+        // Position the rectangle at the tip of the ship
+        sf::Vector2f shipPosition = ship.getPosition();
+        sf::Vector2f offset = sf::Vector2f(cos(newBullet.angle) * length / 2, sin(newBullet.angle) * length / 2);
+        newBullet.shape.setPosition(shipPosition + offset);
 
+        newBullet.shape.setRotation(newBullet.angle * 180 / M_PI);
         bulletVector.push_back(newBullet);
     }
 }
@@ -58,7 +56,7 @@ void Projectile::update(sf::RenderWindow &window, Ship &ship){
     drawProjectile(window);
 }
 
-std::vector<Projectile::bullet> Projectile::getProjectiles(){
+std::vector<Projectile::bullet>& Projectile::getProjectiles(){
     return bulletVector;
 }
-
+    

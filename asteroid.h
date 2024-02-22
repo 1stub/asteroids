@@ -12,9 +12,9 @@ class Asteroid{
     public:
         Asteroid(sf::Vector2f position, float size, float angle);
         void updateAsteroid(sf::RenderWindow &window, Ship &ship, Projectile &bullet);
-        void drawAsteroid(sf::RenderWindow &window, sf::CircleShape asteroid); 
+        void drawAsteroid(sf::RenderWindow &window, sf::ConvexShape& asteroid); 
     private:
-        sf::CircleShape asteroid;
+        sf::ConvexShape asteroid;
         int hitCount;
 };
 
