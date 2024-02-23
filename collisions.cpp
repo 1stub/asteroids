@@ -1,18 +1,39 @@
 #include "collisions.h"
 
 void Collisions::update(sf::RenderWindow &window, Ship &ship, Projectile &bullet){
-    for(auto& asteroid : asteroidVec){
-        for (auto it = bullet.getProjectiles().begin(); it != bullet.getProjectiles().end(); ++it) {
-        sf::FloatRect rect = it->shape.getGlobalBounds();
-            if(asteroid.checkPoint(rect)){ //finds a point that is always on the line due to weird boinding box
-                std::cout << "Collision detedted" << std::endl;
-                asteroid.increaseHitCount();
-                bullet.getProjectiles().erase(it);
-                if (it == bullet.getProjectiles().end()) {
-                    break; // Exit loop if iterator reaches the end
+    // Create vectors to store indices of projectiles and asteroids to remove
+    std::vector<int> projectilesToRemove;
+    std::vector<int> asteroidsToRemove;
+    
+    // Check collisions
+    for(int i = 0; i < asteroidVec.size(); ++i){
+        for (int j = 0; j < bullet.getProjectiles().size(); ++j) {
+            sf::FloatRect rect = bullet.getProjectiles()[j].shape.getGlobalBounds();
+            if(asteroidVec[i].checkPoint(rect)){
+                std::cout << "Collision detected" << std::endl;
+                asteroidVec[i].increaseHitCount();
+                projectilesToRemove.push_back(j); // Mark projectile index for removal
+                if(asteroidVec[i].getHitCount() == 1){
+                    for(int k = 0; k < 2; k++){
+                        createAsteroid(asteroidVec.back().getDiePosition(), 10, rand() % 360);
+                        std::cout << "created asteroid" << std::endl;
+                    }
                 }
+                asteroidsToRemove.push_back(i); // Mark asteroid index for removal
             }
         }
+    }
+    
+    for(int i = projectilesToRemove.size() - 1; i >= 0; --i) {
+        bullet.getProjectiles().erase(bullet.getProjectiles().begin() + projectilesToRemove[i]);
+    }
+    
+    for(int i = asteroidsToRemove.size() - 1; i >= 0; --i) {
+        asteroidVec.erase(asteroidVec.begin() + asteroidsToRemove[i]);
+    }
+    
+    for(auto &asteroid : asteroidVec){
+        asteroid.moveAsteroid();
         asteroid.drawAsteroid(window);
     }
 }

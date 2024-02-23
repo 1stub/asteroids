@@ -15,9 +15,13 @@ class Asteroid{
         bool checkPoint(sf::FloatRect rect);
         void increaseHitCount();
         sf::Vector2f getVelocity();
+        int getHitCount();
+        sf::Vector2f getDiePosition();
+        void moveAsteroid();
     private:
         sf::CircleShape asteroid;
         sf::Vector2f vel = sf::Vector2f(2,2);
+        float angle;
         float radius;
         int hitCount;
 };

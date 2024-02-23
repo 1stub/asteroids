@@ -8,6 +8,7 @@ Asteroid::Asteroid(sf::Vector2f position, float size, float angle) : hitCount(0)
     asteroid.setOutlineThickness(1.f);
     asteroid.setRadius(size);
     this->radius = size;
+    this->angle = angle * 0.01745329;
 
     asteroid.setPosition(position);
 }
@@ -39,5 +40,17 @@ void Asteroid::increaseHitCount(){
 
 sf::Vector2f Asteroid::getVelocity(){
     return vel;
+}
+
+int Asteroid::getHitCount(){
+    return hitCount;
+}
+
+sf::Vector2f Asteroid::getDiePosition(){
+    return asteroid.getPosition();
+}
+
+void Asteroid::moveAsteroid(){
+    asteroid.move(sf::Vector2f(vel.x*cos(angle), vel.y*sin(angle)));
 }
 
