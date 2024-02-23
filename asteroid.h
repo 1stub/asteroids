@@ -11,11 +11,13 @@
 class Asteroid{
     public:
         Asteroid(sf::Vector2f position, float size, float angle);
-        void updateAsteroid(sf::RenderWindow &window, Ship &ship, Projectile &bullet);
-        void drawAsteroid(sf::RenderWindow &window, sf::CircleShape& asteroid);
+        void drawAsteroid(sf::RenderWindow &window);
         bool checkPoint(sf::FloatRect rect);
+        void increaseHitCount();
+        sf::Vector2f getVelocity();
     private:
         sf::CircleShape asteroid;
+        sf::Vector2f vel = sf::Vector2f(2,2);
         float radius;
         int hitCount;
 };

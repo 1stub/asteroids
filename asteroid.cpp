@@ -12,22 +12,7 @@ Asteroid::Asteroid(sf::Vector2f position, float size, float angle) : hitCount(0)
     asteroid.setPosition(position);
 }
 
-void Asteroid::updateAsteroid(sf::RenderWindow &window, Ship &ship, Projectile &bullet){
-    for (auto it = bullet.getProjectiles().begin(); it != bullet.getProjectiles().end(); ++it) {
-        sf::FloatRect rect = it->shape.getGlobalBounds();
-        if(checkPoint(rect)){ //finds a point that is always on the line due to weird boinding box
-            std::cout << "Collision detedted" << std::endl;
-            hitCount++;
-            bullet.getProjectiles().erase(it);
-            if (it == bullet.getProjectiles().end()) {
-                break; // Exit loop if iterator reaches the end
-            }
-        }
-    }
-    drawAsteroid(window, asteroid); 
-}
-
-void Asteroid::drawAsteroid(sf::RenderWindow &window, sf::CircleShape &asteroid){
+void Asteroid::drawAsteroid(sf::RenderWindow &window){
     window.draw(asteroid);
 }
 
@@ -46,5 +31,13 @@ bool Asteroid::checkPoint(sf::FloatRect rect) {
     float cornerDistance_sq = ((circleDistance.x - rect.width/2) * (circleDistance.x - rect.width/2)) + ((circleDistance.y - rect.height/2) * (circleDistance.y - rect.height/2));
 
     return (cornerDistance_sq <= (radius * radius));
+}
+
+void Asteroid::increaseHitCount(){
+    hitCount++;
+}
+
+sf::Vector2f Asteroid::getVelocity(){
+    return vel;
 }
 
