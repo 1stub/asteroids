@@ -15,8 +15,12 @@ void Collisions::update(sf::RenderWindow &window, Ship &ship, Projectile &bullet
                 projectilesToRemove.push_back(j); // Mark projectile index for removal
                 if(asteroidVec[i].getHitCount() == 1){
                     for(int k = 0; k < 2; k++){
-                        createAsteroid(asteroidVec.back().getDiePosition(), 10, rand() % 360);
-                        std::cout << "created asteroid" << std::endl;
+                        createAsteroid(asteroidVec[i].getDiePosition(), 15, rand() % 360, 1);
+                    }
+                }
+                else if (asteroidVec[i].getHitCount() == 2){
+                    for(int k = 0; k < 2; k++){
+                        createAsteroid(asteroidVec[i].getDiePosition(), 10, rand() % 360, 2);
                     }
                 }
                 asteroidsToRemove.push_back(i); // Mark asteroid index for removal
@@ -33,12 +37,13 @@ void Collisions::update(sf::RenderWindow &window, Ship &ship, Projectile &bullet
     }
     
     for(auto &asteroid : asteroidVec){
+        asteroid.updateAsteroid();
         asteroid.moveAsteroid();
         asteroid.drawAsteroid(window);
     }
 }
 
-void Collisions::createAsteroid(sf::Vector2f position, float size, float angle) {
+void Collisions::createAsteroid(sf::Vector2f position, float size, float angle, int hit) {
     // Create a new asteroid and push it into the vector
-    asteroidVec.emplace_back(position, size, angle);
+    asteroidVec.emplace_back(position, size, angle, hit);
 }

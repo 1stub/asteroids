@@ -14,7 +14,7 @@ int main()
     Projectile projectile;
     Collisions collide;
     
-    collide.createAsteroid(sf::Vector2f(160,160), 40, 20);
+    collide.createAsteroid(sf::Vector2f(160,160), 40, 20, 0);
 
     while (window.isOpen())
     {

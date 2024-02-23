@@ -10,7 +10,7 @@
 class Collisions{
     public:
         void update(sf::RenderWindow &window,Ship &ship, Projectile &bullet);
-        void createAsteroid(sf::Vector2f position, float size, float angle);
+        void createAsteroid(sf::Vector2f position, float size, float angle, int hit);
     private:
         std::vector<Asteroid> asteroidVec;
 };

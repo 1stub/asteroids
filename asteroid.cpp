@@ -1,15 +1,31 @@
 #include "asteroid.h"
 #include <SFML/Graphics/CircleShape.hpp>
 
-Asteroid::Asteroid(sf::Vector2f position, float size, float angle) : hitCount(0){
+Asteroid::Asteroid(sf::Vector2f position, float size, float angle, int hit){
     asteroid.setPointCount(8); // 8 points to create an octagon
     asteroid.setFillColor(sf::Color::Black); 
     asteroid.setOutlineColor(sf::Color::White);
     asteroid.setOutlineThickness(1.f);
     asteroid.setRadius(size);
+    this->hitCount = hit;
     this->radius = size;
     this->angle = angle * 0.01745329;
 
+    asteroid.setPosition(position);
+}
+
+void Asteroid::updateAsteroid(){
+    sf::Vector2f position = asteroid.getPosition();
+
+    if (position.x < 0)
+        position.x = 800;
+    else if (position.x > 800)
+        position.x = 0.0f;
+
+    if (position.y < 0)
+        position.y = 800;
+    else if (position.y > 800)
+        position.y = 0.0f;
     asteroid.setPosition(position);
 }
 

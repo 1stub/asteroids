@@ -10,7 +10,8 @@
 
 class Asteroid{
     public:
-        Asteroid(sf::Vector2f position, float size, float angle);
+        Asteroid(sf::Vector2f position, float size, float angle, int hit);
+        void updateAsteroid();
         void drawAsteroid(sf::RenderWindow &window);
         bool checkPoint(sf::FloatRect rect);
         void increaseHitCount();
