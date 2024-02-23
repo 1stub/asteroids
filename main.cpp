@@ -6,7 +6,9 @@
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(800, 800), "asteroids", sf::Style::Close);
+    sf::RenderWindow window(sf::VideoMode(800, 800), "asteroids", sf::Style::Close); 
+    sf::Clock clock;
+    sf::Time elapsed;
     float framerateLimit = 30.f;
     window.setFramerateLimit(framerateLimit);
 
@@ -14,10 +16,19 @@ int main()
     Projectile projectile;
     Collisions collide;
     
-    collide.createAsteroid(sf::Vector2f(160,160), 40, 20, 0);
+    collide.createAsteroid(sf::Vector2f(rand() % 780 ,rand() % 800), 40, rand() % 360, 0); //creates large asteroid
+    collide.createAsteroid(sf::Vector2f(rand() % 780 ,rand() % 800), 40, rand() % 360, 0); //creates large asteroid
+    collide.createAsteroid(sf::Vector2f(rand() % 780 ,rand() % 800), 40, rand() % 360, 0); //creates large asteroid        
+    collide.createAsteroid(sf::Vector2f(rand() % 780 ,rand() % 800), 40, rand() % 360, 0); //creates large asteroid
+    collide.createAsteroid(sf::Vector2f(rand() % 780 ,rand() % 800), 40, rand() % 360, 0); //creates large asteroid
+    collide.createAsteroid(sf::Vector2f(rand() % 780 ,rand() % 800), 40, rand() % 360, 0); //creates large asteroid
+
+
+    std::cout << collide.getArraySize() << std::endl;
 
     while (window.isOpen())
     {
+        elapsed = clock.getElapsedTime();
         sf::Event event;
         while (window.pollEvent(event))
         {
@@ -26,10 +37,10 @@ int main()
         }
 
         window.clear();
+        collide.update(window, ship, projectile);
         ship.update();
         projectile.update(window, ship);
         ship.drawShape(window);
-        collide.update(window, ship, projectile);
         window.display();
     }
 

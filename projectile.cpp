@@ -51,7 +51,7 @@ void Projectile::update(sf::RenderWindow &window, Ship &ship){
         hasShot = false; // Reset the flag if the space key is released
     }
     for(auto& bullet : bulletVector){
-        bullet.shape.move(sf::Vector2f(bullet.velocity.x *2, bullet.velocity.y *2));
+        bullet.shape.move(sf::Vector2f(bullet.velocity.x *4, bullet.velocity.y *4));
     }
     drawProjectile(window);
 }
