@@ -12,21 +12,6 @@ Asteroid::Asteroid(sf::Vector2f position, float size, float angle) : hitCount(0)
     asteroid.setPosition(position);
 }
 
-void drawBoundingBox(sf::RenderWindow& window, const sf::ConvexShape& shape) {
-    // Get the global bounds of the shape
-    sf::FloatRect bounds = shape.getGlobalBounds();
-
-    // Create a rectangle shape to represent the bounding box
-    sf::RectangleShape boundingBox(sf::Vector2f(bounds.width, bounds.height));
-    boundingBox.setPosition(bounds.left, bounds.top);
-    boundingBox.setFillColor(sf::Color::Transparent);
-    boundingBox.setOutlineColor(sf::Color::Red); // Outline color
-    boundingBox.setOutlineThickness(1.0f); // Outline thickness
-
-    // Draw the bounding box
-    window.draw(boundingBox);
-}
-
 void Asteroid::updateAsteroid(sf::RenderWindow &window, Ship &ship, Projectile &bullet){
     for (auto it = bullet.getProjectiles().begin(); it != bullet.getProjectiles().end(); ++it) {
         sf::FloatRect rect = it->shape.getGlobalBounds();
@@ -49,8 +34,8 @@ void Asteroid::drawAsteroid(sf::RenderWindow &window, sf::CircleShape &asteroid)
 // used this https://stackoverflow.com/questions/401847/circle-rectangle-collision-detection-intersection
 bool Asteroid::checkPoint(sf::FloatRect rect) {
     sf::Vector2f circleDistance;
-    circleDistance.x = abs((int)asteroid.getPosition().x - (int)rect.getPosition().x);
-    circleDistance.y = abs((int)asteroid.getPosition().y - (int)rect.getPosition().y);
+    circleDistance.x = fabs((asteroid.getPosition().x + radius) - rect.getPosition().x);
+    circleDistance.y = fabs((asteroid.getPosition().y + radius) - rect.getPosition().y);
 
     if (circleDistance.x > (rect.width/2 + radius)) { return false; }
     if (circleDistance.y > (rect.height/2 + radius)) { return false; }
