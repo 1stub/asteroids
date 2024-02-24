@@ -20,9 +20,9 @@ class Asteroid{
         int getHitCount();
         sf::Vector2f getDiePosition();
         void moveAsteroid();
-        sf::CircleShape getShape();
+        const sf::ConvexShape &getShape();
     private:
-        sf::CircleShape asteroid;
+        sf::ConvexShape asteroid;
         sf::Vector2f vel = sf::Vector2f(2,2);
         float angle;
         float radius;

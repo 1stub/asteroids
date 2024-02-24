@@ -6,11 +6,22 @@ Asteroid::Asteroid(sf::Vector2f position, float size, float angle, int hit){
     asteroid.setFillColor(sf::Color::Black); 
     asteroid.setOutlineColor(sf::Color::White);
     asteroid.setOutlineThickness(1.f);
-    asteroid.setRadius(size);
     this->hitCount = hit;
     this->radius = size;
     this->angle = angle * 0.01745329;
+    const float angleIncrement = 3.14159f / 4.0f; // Angle increment for each point (45 degrees)
 
+    float angleRad = 0.0f; // Initial angle
+
+    for (int i = 0; i < 8; ++i) {
+        float x = size * std::cos(angleRad); // X-coordinate of the point
+        float y = size * std::sin(angleRad); // Y-coordinate of the point
+
+        std::cout << x << " " << y << std::endl;
+        asteroid.setPoint(i, sf::Vector2f(x, y)); // Set the point
+
+        angleRad += angleIncrement; // Increment angle for the next point
+    }
     asteroid.setPosition(position);
 }
 
@@ -33,23 +44,6 @@ void Asteroid::drawAsteroid(sf::RenderWindow &window){
     window.draw(asteroid);
 }
 
-// used this https://stackoverflow.com/questions/401847/circle-rectangle-collision-detection-intersection
-bool Asteroid::checkPoint(sf::FloatRect rect) {
-    sf::Vector2f circleDistance;
-    circleDistance.x = fabs((asteroid.getPosition().x + radius) - rect.getPosition().x);
-    circleDistance.y = fabs((asteroid.getPosition().y + radius) - rect.getPosition().y);
-
-    if (circleDistance.x > (rect.width/2 + radius)) { return false; }
-    if (circleDistance.y > (rect.height/2 + radius)) { return false; }
-
-    if (circleDistance.x <= (rect.width/2)) { return true; } 
-    if (circleDistance.y <= (rect.height/2)) { return true; }
-
-    float cornerDistance_sq = ((circleDistance.x - rect.width/2) * (circleDistance.x - rect.width/2)) + ((circleDistance.y - rect.height/2) * (circleDistance.y - rect.height/2));
-
-    return (cornerDistance_sq <= (radius * radius));
-}
-
 void Asteroid::increaseHitCount(){
     hitCount++;
 }
@@ -70,7 +64,7 @@ void Asteroid::moveAsteroid(){
     asteroid.move(sf::Vector2f(vel.x*cos(angle), vel.y*sin(angle)));
 }
 
-sf::CircleShape Asteroid::getShape(){
+const sf::ConvexShape& Asteroid::getShape(){
     return asteroid;
 }
 

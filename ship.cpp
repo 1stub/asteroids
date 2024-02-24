@@ -1,6 +1,8 @@
 #include "ship.h"
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Keyboard.hpp>
+#include <algorithm>
+#include <cmath>
 
 Ship::Ship(){
     shape.setPointCount(3);
@@ -18,7 +20,7 @@ void Ship::drawShape(sf::RenderWindow &window){
     window.draw(shape);
 }
 
-sf::ConvexShape Ship::getShape(){
+const sf::ConvexShape& Ship::getShape(){
     return shape;
 }
 
@@ -97,11 +99,57 @@ void Ship::applyForces(){
     std::cout << v.x << ", " << v.y << std::endl;
 }
 
-// https://github.com/pabratte/SAT_SFML/blob/master/main.cpp
-// SAT detection for FloatRects
-bool Ship::sat_test(const sf::ConvexShape &sp1, const sf::CircleShape &sp2, sf::Vector2f *out_mtv){
+bool Ship::ShapeOverlap_SAT(const sf::ConvexShape& shape1, const sf::ConvexShape& shape2) {
+    const sf::ConvexShape* poly1 = &shape1;
+    const sf::ConvexShape* poly2 = &shape2;
+
+
+    /*std::cout << "Ship/Asteroid Vertices:" << std::endl;
+    for (unsigned int i = 0; i < poly1->getPointCount(); ++i) {
+        sf::Vector2f vertex = poly1->getPoint(i);
+        std::cout << "Vertex " << i << ": (" << vertex.x << ", " << vertex.y << ")" << std::endl;
+    }
+
+    std::cout << "Ship/Asteroid Vertices:" << std::endl;
+    for (unsigned int i = 0; i < poly2->getPointCount(); ++i) {
+        sf::Vector2f vertex = poly2->getPoint(i);
+        std::cout << "Vertex " << i << ": (" << vertex.x << ", " << vertex.y << ")" << std::endl;
+    }*/
+
+    for (int shape = 0; shape < 2; shape++) {
+        if (shape == 1) {
+            poly1 = &shape2;
+            poly2 = &shape1;
+        }
+        for(int a = 0; a < poly1->getPointCount(); a++){
+            int b = (a + 1) % poly1->getPointCount();
+            sf::Vector2f axisProj = sf::Vector2f(-(poly1->getTransform().transformPoint(poly1->getPoint(b)).y - poly1->getTransform().transformPoint(poly1->getPoint(a)).y), poly1->getTransform().transformPoint(poly1->getPoint(b)).x - poly1->getTransform().transformPoint(poly1->getPoint(a)).x );
+            float d = sqrtf(axisProj.x * axisProj.x + axisProj.y * axisProj.y); //distance
+            axisProj = sf::Vector2f(axisProj.x / d, axisProj.y/d);
+
+            float min_r1 = INFINITY, max_r1 = -INFINITY;
+            for(int p = 0; p < poly1->getPointCount(); p++){
+                float q = (poly1->getTransform().transformPoint(poly1->getPoint(p)).x * axisProj.x + poly1->getTransform().transformPoint(poly1->getPoint(p)).y * axisProj.y);
+                min_r1 = std::min(min_r1,q);
+                max_r1 = std::max(max_r1, q);
+            }
+            float min_r2 = INFINITY, max_r2 = -INFINITY;
+            for(int p = 0; p < poly2->getPointCount(); p++){
+
+                float q = (poly2->getTransform().transformPoint(poly2->getPoint(p)).x * axisProj.x + poly2->getTransform().transformPoint(poly2->getPoint(p)).y * axisProj.y);
+                min_r2 = std::min(min_r2,q);
+                max_r2 =std::max(max_r2, q);
+            }
+            if (!(max_r2 >= min_r1 && max_r1 >= min_r2))
+				return false;
+        }
+    }
+    return true;
+}
+
+bool Ship::sat_test_bullet(const sf::ConvexShape &sp1, const sf::FloatRect &sp2, sf::Vector2f *out_mtv){
 	const sf::FloatRect &rectSp1 = sp1.getGlobalBounds();
-	const sf::FloatRect &rectSp2 = sp2.getGlobalBounds();
+	const sf::FloatRect &rectSp2 = sp2;
 	float proj_x, proj_y, overlap_x, overlap_y;
 	
 	// test overlap in x axis
@@ -133,6 +181,7 @@ bool Ship::sat_test(const sf::ConvexShape &sp1, const sf::CircleShape &sp2, sf::
 }
 
 
+
 sf::Vector2f Ship::getVelocity(){
     return v;
 }
@@ -143,4 +192,25 @@ float Ship::getAngle(){
 
 sf::Vector2f Ship::getPosition(){
     return shape.getPosition();
+}
+
+void Ship::loadLives(sf::RenderWindow &window, int lives){
+    int pos = 0;
+    for(int i = lives; i > 0; i--){
+        sf::Texture img; 
+        sf::Sprite sprite;
+        if (!img.loadFromFile("./img/ship.png",sf::IntRect(0, 0, 32, 32) ) )
+        {
+            // error...
+        }
+        sprite.setTexture(img);
+        sprite.setPosition(sf::Vector2f(pos, 0));
+        window.draw(sprite);
+        pos+=32;
+    }
+}
+
+void Ship::shipReset(sf::RenderWindow &window){
+    sf::sleep(sf::seconds(1));
+    shape.setPosition(sf::Vector2f(WIDTH/2, HEIGHT/2));
 }

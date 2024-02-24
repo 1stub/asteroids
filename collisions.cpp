@@ -9,7 +9,7 @@ void Collisions::update(sf::RenderWindow &window, Ship &ship, Projectile &bullet
     for(int i = 0; i < asteroidVec.size(); ++i){
         for (int j = 0; j < bullet.getProjectiles().size(); ++j) {
             sf::FloatRect rect = bullet.getProjectiles()[j].shape.getGlobalBounds();
-            if(asteroidVec[i].checkPoint(rect)){
+            if(ship.sat_test_bullet(asteroidVec[i].getShape(), rect)){
                 std::cout << "Collision detected" << std::endl;
                 asteroidVec[i].increaseHitCount();
                 if(asteroidVec[i].getHitCount() == 1){
@@ -32,8 +32,11 @@ void Collisions::update(sf::RenderWindow &window, Ship &ship, Projectile &bullet
         bullet.getProjectiles().erase(bullet.getProjectiles().begin() + projectilesToRemove);
     }
     for(auto &asteroid : asteroidVec){
-        if(ship.sat_test(ship.getShape(), asteroid.getShape())){
+        ship.loadLives(window, lives);
+        if(ship.ShapeOverlap_SAT(ship.getShape(), asteroid.getShape())){ //this collision works with a rectangle bounding box around the circle so its not functioning well.
             std::cout << "collision with ship and asteroid detected" << std::endl;
+            lives--;
+            ship.shipReset(window);
         }
         asteroid.updateAsteroid();
         asteroid.moveAsteroid();

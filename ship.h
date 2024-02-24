@@ -9,14 +9,19 @@ class Ship{
     public:
         Ship();
         void drawShape(sf::RenderWindow &window);
-        sf::ConvexShape getShape();
+        const sf::ConvexShape& getShape();
         void setPosition(const sf::Vector2f& position);
         void update();
         void applyForces();
         sf::Vector2f getVelocity();
         float getAngle();
         sf::Vector2f getPosition();
-        bool sat_test(const sf::ConvexShape &sp1, const sf::CircleShape &sp2, sf::Vector2f *out_mtv = nullptr);
+        void loadLives(sf::RenderWindow &window, int lives);
+
+        bool ShapeOverlap_SAT(const sf::ConvexShape& shape1, const sf::ConvexShape& shape2); 
+        bool sat_test_bullet(const sf::ConvexShape &sp1, const sf::FloatRect &sp2, sf::Vector2f *out_mtv = nullptr);
+        
+        void shipReset(sf::RenderWindow &window);
     private:
         sf::ConvexShape shape;
         float angle = 0; //do cos and sin then multiply by velocity vector to account for rotations

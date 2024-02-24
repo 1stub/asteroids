@@ -15,6 +15,7 @@ class Collisions{
         int getArraySize();
     private:
         std::vector<Asteroid> asteroidVec;
+        int lives = 3;
 };
 
 #endif
