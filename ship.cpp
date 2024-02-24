@@ -19,13 +19,26 @@ void Ship::drawShape(sf::RenderWindow &window){
 }
 
 void Ship::update(){
+    sf::Vector2f position = shape.getPosition();
+
+    if (position.x < 0)
+        position.x = 800;
+    else if (position.x > 800)
+        position.x = 0.0f;
+
+    if (position.y < 0)
+        position.y = 800;
+    else if (position.y > 800)
+        position.y = 0.0f;
+    shape.setPosition(position);
+    
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-        angle += (5 * DEG2RAD);
-        shape.rotate(5.f);
+        angle += (10 * DEG2RAD);
+        shape.rotate(10.f);
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
-        angle -= (5 * DEG2RAD);
-        shape.rotate(-5.f);
+        angle -= (10 * DEG2RAD);
+        shape.rotate(-10.f);
     }
     // Update velocity based on the ship's orientation if acceleration keys are pressed
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
