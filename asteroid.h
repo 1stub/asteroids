@@ -2,6 +2,7 @@
 #define ASTEROID_H
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <vector>
 
@@ -19,6 +20,7 @@ class Asteroid{
         int getHitCount();
         sf::Vector2f getDiePosition();
         void moveAsteroid();
+        sf::CircleShape getShape();
     private:
         sf::CircleShape asteroid;
         sf::Vector2f vel = sf::Vector2f(2,2);

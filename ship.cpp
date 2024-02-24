@@ -18,7 +18,12 @@ void Ship::drawShape(sf::RenderWindow &window){
     window.draw(shape);
 }
 
+sf::ConvexShape Ship::getShape(){
+    return shape;
+}
+
 void Ship::update(){
+    //checks for ship exceeding bounds
     sf::Vector2f position = shape.getPosition();
 
     if (position.x < 0)
@@ -32,6 +37,8 @@ void Ship::update(){
         position.y = 0.0f;
     shape.setPosition(position);
     
+    //SAT Collisions
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
         angle += (10 * DEG2RAD);
         shape.rotate(10.f);
@@ -89,6 +96,42 @@ void Ship::applyForces(){
     }
     std::cout << v.x << ", " << v.y << std::endl;
 }
+
+// https://github.com/pabratte/SAT_SFML/blob/master/main.cpp
+// SAT detection for FloatRects
+bool Ship::sat_test(const sf::ConvexShape &sp1, const sf::CircleShape &sp2, sf::Vector2f *out_mtv){
+	const sf::FloatRect &rectSp1 = sp1.getGlobalBounds();
+	const sf::FloatRect &rectSp2 = sp2.getGlobalBounds();
+	float proj_x, proj_y, overlap_x, overlap_y;
+	
+	// test overlap in x axis
+	proj_x = std::max(rectSp1.left+rectSp1.width, rectSp2.left+rectSp2.width)-std::min(rectSp1.left, rectSp2.left);
+	if(proj_x < rectSp1.width+ rectSp2.width){
+		if(out_mtv){
+			// calculate mtv in x
+			overlap_x = rectSp1.width+ rectSp2.width - proj_x;
+		}
+		// test overlap in y axis
+		proj_y = std::max(rectSp1.top+rectSp1.height, rectSp2.top+rectSp2.height)-std::min(rectSp1.top, rectSp2.top);
+		if(proj_y < rectSp1.height+ rectSp2.height){
+			if(out_mtv){
+				// calculate mtv in y
+				overlap_y = rectSp1.height+ rectSp2.height - proj_y;
+				out_mtv->x = out_mtv->y = 0;
+				
+				// choose minimun overlap
+				if(overlap_x < overlap_y){
+					out_mtv->x = overlap_x * (rectSp1.left < rectSp2.left?-1:1);
+				}else{
+					out_mtv->y = overlap_y * (rectSp1.top < rectSp2.top?-1:1);
+				}
+			}
+			return true;
+		}
+	}
+	return false;
+}
+
 
 sf::Vector2f Ship::getVelocity(){
     return v;

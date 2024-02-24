@@ -70,3 +70,8 @@ void Asteroid::moveAsteroid(){
     asteroid.move(sf::Vector2f(vel.x*cos(angle), vel.y*sin(angle)));
 }
 
+sf::CircleShape Asteroid::getShape(){
+    return asteroid;
+}
+
+

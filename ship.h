@@ -9,12 +9,14 @@ class Ship{
     public:
         Ship();
         void drawShape(sf::RenderWindow &window);
+        sf::ConvexShape getShape();
         void setPosition(const sf::Vector2f& position);
         void update();
         void applyForces();
         sf::Vector2f getVelocity();
         float getAngle();
         sf::Vector2f getPosition();
+        bool sat_test(const sf::ConvexShape &sp1, const sf::CircleShape &sp2, sf::Vector2f *out_mtv = nullptr);
     private:
         sf::ConvexShape shape;
         float angle = 0; //do cos and sin then multiply by velocity vector to account for rotations

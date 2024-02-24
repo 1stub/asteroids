@@ -32,6 +32,9 @@ void Collisions::update(sf::RenderWindow &window, Ship &ship, Projectile &bullet
         bullet.getProjectiles().erase(bullet.getProjectiles().begin() + projectilesToRemove);
     }
     for(auto &asteroid : asteroidVec){
+        if(ship.sat_test(ship.getShape(), asteroid.getShape())){
+            std::cout << "collision with ship and asteroid detected" << std::endl;
+        }
         asteroid.updateAsteroid();
         asteroid.moveAsteroid();
         asteroid.drawAsteroid(window);
