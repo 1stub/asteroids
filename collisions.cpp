@@ -37,6 +37,7 @@ void Collisions::update(sf::RenderWindow &window, Ship &ship, Projectile &bullet
             std::cout << "collision with ship and asteroid detected" << std::endl;
             lives--;
             ship.shipReset(window);
+            resetAsteroids();
         }
         asteroid.updateAsteroid();
         asteroid.moveAsteroid();
@@ -51,4 +52,12 @@ void Collisions::createAsteroid(sf::Vector2f position, float size, float angle, 
 
 int Collisions::getArraySize(){
     return asteroidVec.size();
+}
+
+void Collisions::resetAsteroids(){
+    asteroidVec.clear();
+    
+    createAsteroid(sf::Vector2f(rand() % 780 ,rand() % 800), 40, rand() % 360, 0); //creates large asteroids
+    createAsteroid(sf::Vector2f(rand() % 780 ,rand() % 800), 40, rand() % 360, 0); //creates large asteroids
+    createAsteroid(sf::Vector2f(rand() % 780 ,rand() % 800), 40, rand() % 360, 0); //creates large asteroids
 }

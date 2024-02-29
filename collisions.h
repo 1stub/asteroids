@@ -13,6 +13,7 @@ class Collisions{
         void update(sf::RenderWindow &window,Ship &ship, Projectile &bullet);
         void createAsteroid(sf::Vector2f position, float size, float angle, int hit);
         int getArraySize();
+        void resetAsteroids();
     private:
         std::vector<Asteroid> asteroidVec;
         int lives = 3;

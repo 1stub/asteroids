@@ -99,22 +99,10 @@ void Ship::applyForces(){
     std::cout << v.x << ", " << v.y << std::endl;
 }
 
+// https://github.com/OneLoneCoder/Javidx9/blob/master/PixelGameEngine/SmallerProjects/OneLoneCoder_PGE_PolygonCollisions1.cpp
 bool Ship::ShapeOverlap_SAT(const sf::ConvexShape& shape1, const sf::ConvexShape& shape2) {
     const sf::ConvexShape* poly1 = &shape1;
     const sf::ConvexShape* poly2 = &shape2;
-
-
-    /*std::cout << "Ship/Asteroid Vertices:" << std::endl;
-    for (unsigned int i = 0; i < poly1->getPointCount(); ++i) {
-        sf::Vector2f vertex = poly1->getPoint(i);
-        std::cout << "Vertex " << i << ": (" << vertex.x << ", " << vertex.y << ")" << std::endl;
-    }
-
-    std::cout << "Ship/Asteroid Vertices:" << std::endl;
-    for (unsigned int i = 0; i < poly2->getPointCount(); ++i) {
-        sf::Vector2f vertex = poly2->getPoint(i);
-        std::cout << "Vertex " << i << ": (" << vertex.x << ", " << vertex.y << ")" << std::endl;
-    }*/
 
     for (int shape = 0; shape < 2; shape++) {
         if (shape == 1) {
@@ -180,8 +168,6 @@ bool Ship::sat_test_bullet(const sf::ConvexShape &sp1, const sf::FloatRect &sp2,
 	return false;
 }
 
-
-
 sf::Vector2f Ship::getVelocity(){
     return v;
 }
@@ -213,4 +199,9 @@ void Ship::loadLives(sf::RenderWindow &window, int lives){
 void Ship::shipReset(sf::RenderWindow &window){
     sf::sleep(sf::seconds(1));
     shape.setPosition(sf::Vector2f(WIDTH/2, HEIGHT/2));
+    //v = sf::Vector2f(0.0f, 0.0f);
+    //moveVel = sf::Vector2f(0.0f, 0.0f);
+    //angle = 0;
+    //shape.setRotation(angle);
+    window.draw(shape);
 }
