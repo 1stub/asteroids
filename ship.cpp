@@ -199,9 +199,8 @@ void Ship::loadLives(sf::RenderWindow &window, int lives){
 void Ship::shipReset(sf::RenderWindow &window){
     sf::sleep(sf::seconds(1));
     shape.setPosition(sf::Vector2f(WIDTH/2, HEIGHT/2));
-    //v = sf::Vector2f(0.0f, 0.0f);
-    //moveVel = sf::Vector2f(0.0f, 0.0f);
-    //angle = 0;
-    //shape.setRotation(angle);
-    window.draw(shape);
+    v = sf::Vector2f(0.0f, 0.0f);
+    moveVel = sf::Vector2f(0.0f, 0.0f);
+    angle = 0;
+    shape.setRotation(angle);
 }

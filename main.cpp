@@ -3,6 +3,7 @@
 #include "projectile.h"
 #include "asteroid.h"
 #include "collisions.h"
+#include "score.h"
 
 int main()
 {
@@ -17,6 +18,7 @@ int main()
     Ship ship;
     Projectile projectile;
     Collisions collide;
+    Score score;
     
     collide.createAsteroid(sf::Vector2f(rand() % 780 ,rand() % 800), 40, rand() % 360, 0); //creates large asteroid
     collide.createAsteroid(sf::Vector2f(rand() % 780 ,rand() % 800), 40, rand() % 360, 0); //creates large asteroids
@@ -34,7 +36,7 @@ int main()
         }
 
         window.clear();
-        collide.update(window, ship, projectile);
+        collide.update(window, ship, projectile, score);
         if (elapsed.asMilliseconds() % spawn == 0) {
             collide.createAsteroid(sf::Vector2f(rand() % 780 ,rand() % 800), 40, rand() % 360, 0); //creates large asteroids
             spawn--;
@@ -42,6 +44,7 @@ int main()
         ship.update();
         projectile.update(window, ship);
         ship.drawShape(window);
+        score.printScore(window);
         window.display();
     }
 

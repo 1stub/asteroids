@@ -1,6 +1,6 @@
 #include "collisions.h"
 
-void Collisions::update(sf::RenderWindow &window, Ship &ship, Projectile &bullet){
+void Collisions::update(sf::RenderWindow &window, Ship &ship, Projectile &bullet, Score &score){
     // indicies of projectile/asteroid we want to remove after iteration
     int projectilesToRemove = -1;
     int asteroidsToRemove = -1;
@@ -13,14 +13,19 @@ void Collisions::update(sf::RenderWindow &window, Ship &ship, Projectile &bullet
                 std::cout << "Collision detected" << std::endl;
                 asteroidVec[i].increaseHitCount();
                 if(asteroidVec[i].getHitCount() == 1){
+                    score.increaseScore(10);
                     for(int k = 0; k < 2; k++){
                         createAsteroid(asteroidVec[i].getDiePosition(), 15, rand() % 360, 1);
                     }
                 }
-                if (asteroidVec[i].getHitCount() == 2){
+                else if (asteroidVec[i].getHitCount() == 2){
+                    score.increaseScore(25);
                     for(int k = 0; k < 2; k++){
                         createAsteroid(asteroidVec[i].getDiePosition(), 10, rand() % 360, 2);
                     }
+                }
+                else{
+                    score.increaseScore(50);
                 }
                 projectilesToRemove = j; // Mark projectile index for removal
                 asteroidsToRemove = i; // Mark asteroid index for removal
@@ -38,6 +43,7 @@ void Collisions::update(sf::RenderWindow &window, Ship &ship, Projectile &bullet
             lives--;
             ship.shipReset(window);
             resetAsteroids();
+            break;
         }
         asteroid.updateAsteroid();
         asteroid.moveAsteroid();
