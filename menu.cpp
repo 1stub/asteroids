@@ -10,7 +10,7 @@ Menu::Menu(){
 	title.setStyle(sf::Text::Bold);
 	title.setCharacterSize(128);
 	title.setFillColor(sf::Color::White);
-	title.setPosition(sf::Vector2f(width / 2, height / 24));
+	title.setPosition(sf::Vector2f(width/4, height / 24));
 	title.setString("Asteroids");
 
 	menu[0].setFont(font);
