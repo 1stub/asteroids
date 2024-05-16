@@ -7,10 +7,18 @@
 
 class Ship{
     public:
+        struct Particle {
+            sf::CircleShape shape;
+            sf::Vector2f velocity;
+            float lifetime;
+        };
         Ship();
         void drawShape(sf::RenderWindow &window);
         const sf::ConvexShape& getShape();
         void setPosition(const sf::Vector2f& position);
+        void createParticle(sf::Vector2f position, sf::Vector2f vel);
+        void drawParticles(sf::RenderWindow& window);
+        void updateParticles(float deltaTime);
         void update();
         void applyForces();
         sf::Vector2f getVelocity();
@@ -23,6 +31,8 @@ class Ship{
         
         void shipReset(sf::RenderWindow &window);
     private:
+        std::vector<Particle> particles;
+        sf::Clock particleClock;
         sf::ConvexShape shape;
         float angle = 0; //do cos and sin then multiply by velocity vector to account for rotations
         static constexpr float HEIGHT = 800;

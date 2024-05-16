@@ -66,6 +66,7 @@ int main()
           }
         }
         if(menu.isPlay()){
+          float deltaTime = clock.restart().asSeconds();
           window.clear();
           collide.update(window, ship, projectile, score);
           if (elapsed.asMilliseconds() % spawn == 0) {
@@ -73,7 +74,9 @@ int main()
               spawn--;
           }
           ship.update();
+          ship.updateParticles(deltaTime);
           projectile.update(window, ship);
+          ship.drawParticles(window);
           ship.drawShape(window);
           score.printScore(window);
           window.display();

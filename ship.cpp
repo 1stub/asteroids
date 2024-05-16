@@ -24,6 +24,33 @@ const sf::ConvexShape& Ship::getShape(){
     return shape;
 }
 
+void Ship::createParticle(sf::Vector2f position, sf::Vector2f vel) {
+    Particle particle;
+    particle.shape.setRadius(3.f);
+    particle.shape.setFillColor(sf::Color::White);
+    sf::Vector2f offset = sf::Vector2f(cos(angle) * -5, sin(angle) * -5);
+    particle.shape.setPosition(position + offset);
+    particle.velocity = vel; // Speed of the particle
+    particle.lifetime = 1.f; // Lifetime in seconds
+    particles.push_back(particle);
+}
+
+void Ship::updateParticles(float deltaTime) {
+    for (auto& particle : particles) {
+        particle.shape.move(particle.velocity * deltaTime);
+        particle.lifetime -= deltaTime;
+    // Remove particles whose lifetime has expired
+    // remove_if allows for safe deletion while iterating over vector
+       particles.erase(std::remove_if(particles.begin(), particles.end(),[](const Particle& p) { return p.lifetime <= 0.f; }),particles.end());
+    }
+}
+
+void Ship::drawParticles(sf::RenderWindow& window) {
+    for (const auto& particle : particles) {
+        window.draw(particle.shape);
+    }
+}
+
 void Ship::update(){
     //checks for ship exceeding bounds
     sf::Vector2f position = shape.getPosition();
@@ -56,6 +83,7 @@ void Ship::update(){
         }
         applyForces();
         moveVel = v;
+        createParticle(position, moveVel);
     }else{
         if(a>0){
             a-=accelerationRate;
